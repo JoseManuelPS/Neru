@@ -4,12 +4,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.TextView;
 
 public class FullscreenActivity extends AppCompatActivity {
 
     private TextView screen;
+    private boolean running=false;
+    private Thread thread;
+    private Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +37,22 @@ public class FullscreenActivity extends AppCompatActivity {
         screen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                init();
+                if(running){
+                    thread.interrupt();
+                    running = false;
+                    screen.setText(getString(R.string.screen));
+                }else{
+                    running = true;
+                    init();
+                }
             }
         });
+
+        vibrator = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
     }
 
     public void init() {
-        Thread thread = new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             public void run() {
                 try {
                     for (int x = 0; x < 4; x++) {
@@ -46,7 +60,7 @@ public class FullscreenActivity extends AppCompatActivity {
                             updateTV(x, y);
                             Thread.sleep(1000);
                             if(y==1){
-                                //Vibrar
+                                vibrator.vibrate(VibrationEffect.createOneShot(1000, 1));
                             }
                             if(x==3 && y == 1){
                                 x=0;
