@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Neru</string>
     <string name="screen">Pulsa en la pantalla para empezar</string>
+    <string name="screen_end">Manten pulsada la pantalla para finalizar</string>
 </resources>

@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class FullscreenActivity extends AppCompatActivity {
 
     private TextView screen;
+    private TextView screen_end;
     private boolean running=false;
     private Thread thread;
     private Vibrator vibrator;
@@ -27,6 +28,8 @@ public class FullscreenActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
+        screen_end = findViewById(R.id.screen_end);
+
         screen = findViewById(R.id.screen);
         screen.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -37,14 +40,21 @@ public class FullscreenActivity extends AppCompatActivity {
         screen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(running){
-                    thread.interrupt();
-                    running = false;
-                    screen.setText(getString(R.string.screen));
-                }else{
+                if(!running){
                     running = true;
+                    screen_end.setVisibility(View.VISIBLE);
                     init();
                 }
+            }
+        });
+        screen.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                thread.interrupt();
+                running = false;
+                screen.setText(getString(R.string.screen));
+                screen_end.setVisibility(View.INVISIBLE);
+                return false;
             }
         });
 

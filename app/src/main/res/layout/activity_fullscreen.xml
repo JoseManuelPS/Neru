@@ -17,4 +17,14 @@
         android:textSize="50sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/screen_end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:text="@string/screen_end"
+        android:textColor="@android:color/white"
+        android:visibility="invisible" />
+
 </FrameLayout>
