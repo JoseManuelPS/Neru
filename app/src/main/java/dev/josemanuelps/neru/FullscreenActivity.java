@@ -13,9 +13,13 @@ public class FullscreenActivity extends AppCompatActivity {
 
     private TextView screen;
     private TextView screen_end;
-    private boolean running=false;
+    private TextView screen_top;
     private Thread thread;
     private Vibrator vibrator;
+
+    private boolean running=false;
+    private boolean stop_flag =false;
+    private int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class FullscreenActivity extends AppCompatActivity {
         }
 
         screen_end = findViewById(R.id.screen_end);
+        screen_top = findViewById(R.id.screen_top);
 
         screen = findViewById(R.id.screen);
         screen.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
@@ -40,10 +45,14 @@ public class FullscreenActivity extends AppCompatActivity {
         screen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!running){
+                if(!running && stop_flag){
                     running = true;
+                    stop_flag = false;
                     screen_end.setVisibility(View.VISIBLE);
+                    screen_top.setVisibility(View.VISIBLE);
                     init();
+                } else {
+                    stop_flag = true;
                 }
             }
         });
@@ -54,6 +63,7 @@ public class FullscreenActivity extends AppCompatActivity {
                 running = false;
                 screen.setText(getString(R.string.screen));
                 screen_end.setVisibility(View.INVISIBLE);
+                screen_top.setVisibility(View.INVISIBLE);
                 return false;
             }
         });
@@ -65,15 +75,17 @@ public class FullscreenActivity extends AppCompatActivity {
         thread = new Thread(new Runnable() {
             public void run() {
                 try {
-                    for (int x = 0; x < 4; x++) {
-                        for (int y = selectTimeOut(x); y > 0; y--) {
-                            updateTV(x, y);
+                    for (int mode = 0; mode <= 3; mode++) {
+                        for (int time = selectTimeOut(mode); time > 0; time--) {
+                            updateTV(mode, time);
                             Thread.sleep(1000);
-                            if(y==1){
+                            if(time == 1){
                                 vibrator.vibrate(VibrationEffect.createOneShot(1000, 1));
                             }
-                            if(x==3 && y == 1){
-                                x=0;
+                            if(mode == 3 && time == 1){
+                                mode = 0;
+                                count++;
+                                screen_top.setText("Completados: " + count);
                             }
                         }
                     }
@@ -85,37 +97,37 @@ public class FullscreenActivity extends AppCompatActivity {
         thread.start();
     }
 
-    public int selectTimeOut(int x) {
+    public int selectTimeOut(int mode) {
 
-        int aux;
+        int time;
 
-        if (x == 0) {
-            aux = 3;
-        } else if (x == 1) {
-            aux = 4;
-        } else if (x == 2) {
-            aux = 7;
+        if (mode == 0) {
+            time = 3;
+        } else if (mode == 1) {
+            time = 4;
+        } else if (mode == 2) {
+            time = 7;
         } else {
-            aux = 8;
+            time = 8;
         }
 
-        return aux;
+        return time;
     }
 
-    public void updateTV(final int x, final int y) {
+    public void updateTV(final int mode, final int time) {
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-                if (x == 0) {
-                    screen.setText("Comenzamos en: " + y);
-                } else if (x == 1) {
-                    screen.setText("Inspiramos: " + y);
-                } else if (x == 2) {
-                    screen.setText("Aguantamos: " + y);
+                if (mode == 0) {
+                    screen.setText("Comenzamos en: " + time);
+                } else if (mode == 1) {
+                    screen.setText("Inspiramos: " + time);
+                } else if (mode == 2) {
+                    screen.setText("Aguantamos: " + time);
                 } else {
-                    screen.setText("Expiramos: " + y);
+                    screen.setText("Expiramos: " + time);
                 }
             }
         });

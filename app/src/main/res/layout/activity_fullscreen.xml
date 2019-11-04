@@ -27,4 +27,14 @@
         android:textColor="@android:color/white"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/screen_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:gravity="center|end"
+        android:text="@string/screen_top"
+        android:textColor="@android:color/white"
+        android:visibility="invisible" />
+
 </FrameLayout>
