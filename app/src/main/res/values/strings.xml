@@ -3,4 +3,5 @@
     <string name="screen">Pulsa en la pantalla para empezar</string>
     <string name="screen_end">Manten pulsada la pantalla para finalizar</string>
     <string name="screen_top">Completados: 0</string>
+    <string name="button_sound_description">Play/Stop background sound</string>
 </resources>

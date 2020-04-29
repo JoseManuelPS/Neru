@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,12 +30,22 @@
 
     <TextView
         android:id="@+id/screen_top"
-        android:layout_width="match_parent"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
-        android:gravity="center|end"
+        android:layout_gravity="top"
+        android:layout_marginStart="10dp"
+        android:gravity="start"
         android:text="@string/screen_top"
         android:textColor="@android:color/white"
         android:visibility="invisible" />
+
+    <ImageButton
+        android:id="@+id/button_sound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/button_sound_description"
+        app:srcCompat="@android:drawable/ic_lock_silent_mode_off" />
 
 </FrameLayout>
